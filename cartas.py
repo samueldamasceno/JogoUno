@@ -1,17 +1,29 @@
 import random
 
-class CartaComum():
+class CartaComum:
     def __init__(self, numero, cor):
         self.numero = numero
         self.cor = cor
 
-class CartaEspecial():
-    def __init__(self, nome, cor=None):
+    def __str__(self):
+        return f"{self.numero} {self.cor}"
+
+class CartaEspecial:
+    def __init__(self, nome, cor):
         self.nome = nome
         self.cor = cor
 
+    def __str__(self):
+        return f"{self.nome} {self.cor}"
 
-class Baralho():
+class CartaCoringa:
+    def __init__(self, nome):
+        self.nome = nome
+    
+    def __str__(self):
+        return f"{self.nome}"
+
+class Baralho:
     def __init__(self):
         self.cartas = []
 
@@ -30,5 +42,21 @@ class Baralho():
                     self.cartas.append(carta)
         for coringa in coringas:
             for i in range(4):
-                carta = CartaEspecial(coringa)
+                carta = CartaCoringa(coringa)
                 self.cartas.append(carta)
+    
+    def embaralhar(self):
+        random.shuffle(self.cartas)
+
+    def distribuirCartas(self):
+        self.embaralhar()
+        cartas_distribuidas = []
+        for i in range(7):
+            cartas_distribuidas.append(self.cartas.pop(0))
+        return cartas_distribuidas
+
+    def comprarCarta(self, quantidade):
+        cartas_compradas = []
+        for i in range(quantidade):
+            cartas_compradas.append(self.cartas.pop(0))
+        return self.cartas.pop(0)
