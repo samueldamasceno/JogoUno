@@ -22,7 +22,25 @@ def bem_vindo():
             print()
 
 def regras():
-    print("a")
+    print("""
+    Regras do Uno:
+    
+    - O objetivo do jogo é ser o primeiro jogador a se livrar de todas as suas cartas.
+    - Cada jogador deve jogar uma carta que tenha a mesma cor ou número da carta no topo.
+    - Se o jogador não puder jogar, ele deve comprar uma carta do baralho.
+    
+          
+    Cartas Especiais:
+    - +2: O próximo jogador compra duas cartas e perde a vez.
+    - Bloqueio: O próximo jogador perde a vez.
+    - Inverter: Inverte a direção do jogo.
+    - Coringa: O jogador escolhe uma nova cor.
+    - +4: O jogador escolhe uma nova cor e o próximo jogador compra quatro cartas e perde a vez.
+    
+    
+    Pronto?
+    """)
+
 
 def exibir_cartas(cartas):
     print("Essas são suas cartas:")
