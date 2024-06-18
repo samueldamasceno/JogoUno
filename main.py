@@ -1,7 +1,12 @@
 from cartas import Baralho, CartaComum, CartaEspecial, CartaCoringa
 import random
+import os
+
+def limpar_tela():
+    os.system('cls' if os.name == 'nt' else 'clear')
 
 def bem_vindo():
+    limpar_tela()
     print("Vamos jogar Uno?")
     print()
     print("""Você conhece as regras?
@@ -15,6 +20,7 @@ def bem_vindo():
             break
         elif opcao == "2":
             regras()
+            digite_enter()
             print()
             break
         else:
@@ -22,6 +28,7 @@ def bem_vindo():
             print()
 
 def regras():
+    limpar_tela()
     print("""
     Regras do Uno:
     
@@ -40,7 +47,6 @@ def regras():
     
     Pronto?
     """)
-
 
 def exibir_cartas(cartas):
     print("Essas são suas cartas:")
@@ -142,7 +148,7 @@ def aplicar_efeito(carta, jogador_atual, cartas_jogador, cartas_computador, bara
             carta.cor = cor
             return True 
         elif carta.nome == "Coringa":
-            cor = escolher_cor()
+            cor = escolher_cor(jogador_atual, cartas_computador)
             carta.cor = cor
             return False
 
@@ -173,6 +179,7 @@ def escolher_cor(jogador, cartas_computador):
         return cor
 
 def jogo():
+    limpar_tela()
     baralho = Baralho()
     cartas_jogador = baralho.distribuirCartas()
     cartas_computador = baralho.distribuirCartas()
@@ -187,7 +194,10 @@ def jogo():
     print("Vamos lá! Você começa")
 
     while len(cartas_jogador) > 0 and len(cartas_computador) > 0:
+        limpar_tela()
         if jogador_atual == "Jogador":
+            print(f"A última carta jogada foi um {topo.nome}")
+            print()
             exibir_cartas(cartas_jogador)
             topo = jogada_jogador(cartas_jogador, topo, baralho)
             bloqueado = aplicar_efeito(topo, jogador_atual, cartas_jogador, cartas_computador, baralho)
