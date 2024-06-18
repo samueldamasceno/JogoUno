@@ -59,4 +59,4 @@ class Baralho:
         cartas_compradas = []
         for i in range(quantidade):
             cartas_compradas.append(self.cartas.pop(0))
-        return self.cartas.pop(0)
+        return cartas_compradas;
