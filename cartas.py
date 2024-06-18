@@ -7,10 +7,10 @@ class CartaComum:
         self.nome = f"{numero} {cor}"
 
 class CartaEspecial:
-    def __init__(self, nome, cor):
-        self.nome = nome
+    def __init__(self, tipo, cor):
+        self.tipo = tipo
         self.cor = cor
-        self.nome = f"{nome} {cor}"
+        self.nome = f"{tipo} {cor}"
 
 class CartaCoringa:
     def __init__(self, nome):
@@ -45,7 +45,7 @@ class Baralho:
     def primeiraCarta(self):
         while True:
             carta = self.cartas.pop(0)
-            if carta.numero:
+            if isinstance(carta, CartaComum):
                 return carta
             else:
                 self.cartas.append(carta)

@@ -31,16 +31,15 @@ def exibir_cartas(cartas):
         i += 1
     print()
 
-def jogada_computador(cartas_computador):
-    print("")
-
 def jogada_jogador(cartas_jogador, topo, baralho):
     while True:
         print("Qual carta você vai jogar? (Digite o número da lista ou a letra C para comprar uma carta)")
         carta_jogada = input()
         
         if carta_jogada.upper() == "C":
-            cartas_jogador.extend(baralho.comprarCarta(1))
+            carta_nova = baralho.comprarCarta(1)
+            cartas_jogador.extend(carta_nova)
+            print("Você comprou: " + carta_nova[0].nome)
             return topo
         elif carta_jogada.isnumeric():
             carta_jogada = int(carta_jogada)
@@ -60,7 +59,7 @@ def jogada_computador(cartas_computador, topo, baralho):
     for carta in cartas_computador:
         if jogada_valida(carta, topo):
             cartas_computador.remove(carta)
-            print(f"O computador jogou a carta {carta.nome}. Ficando com {len(cartas_computador)} cartas.")
+            print(f"O computador jogou a carta {carta.nome}, ficando com {len(cartas_computador)} cartas.")
             return carta
     cartas_computador.extend(baralho.comprarCarta(1))
     print(f"O computador comprou uma carta. Agora ele está com {len(cartas_computador)} cartas.")
@@ -69,10 +68,16 @@ def jogada_computador(cartas_computador, topo, baralho):
 def jogada_valida(carta, topo):
     if isinstance(carta, CartaCoringa):
         return True
-    elif isinstance(carta, CartaComum):
+    elif isinstance(topo, CartaCoringa):
+        return True
+    elif isinstance(carta, CartaComum) and isinstance(topo, CartaComum):
         return carta.numero == topo.numero or carta.cor == topo.cor
-    elif isinstance(carta, CartaEspecial):
-        return carta.nome == topo.nome or carta.cor == topo.cor
+    elif isinstance(carta, CartaEspecial) and isinstance(topo, CartaEspecial):
+        return carta.tipo == topo.tipo or carta.cor == topo.cor
+    elif isinstance(carta, CartaEspecial) and isinstance(topo, CartaComum):
+        return carta.cor == topo.cor
+    elif isinstance(carta, CartaComum) and isinstance(topo, CartaEspecial):
+        return carta.cor == topo.cor
     return False
 
 def jogo():
