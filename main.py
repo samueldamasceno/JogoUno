@@ -31,27 +31,37 @@ def exibir_cartas(cartas):
         i += 1
     print()
 
-def jogada_jogador(cartas_jogador):
-    print("Qual carta você vai jogar? (Digite o número da lista em que ele está)")
-    carta_jogada = input()
-    verificar_opcao(carta_jogada, cartas_jogador)
-
 def jogada_computador(cartas_computador):
+    print("")
 
-
-def verificar_opcao(carta_jogada, cartas_jogador):
+def jogada_jogador(cartas_jogador, topo, baralho):
     while True:
-        if carta_jogada.isnumeric():
+        print("Qual carta você vai jogar? (Digite o número da lista ou a letra C para comprar uma carta)")
+        carta_jogada = input()
+        
+        if carta_jogada.upper() == "C":
+            cartas_jogador.extend(baralho.comprarCarta(1))
+            return topo
+        elif carta_jogada.isnumeric():
             carta_jogada = int(carta_jogada)
             if carta_jogada > 0 and carta_jogada <= len(cartas_jogador):
-                carta_jogada = cartas_jogador[carta_jogada - 1]
-                break
+                carta_selecionada = cartas_jogador[carta_jogada - 1]
+                if jogada_valida(carta_selecionada, topo):
+                    cartas_jogador.remove(carta_selecionada)
+                    return carta_selecionada
+                else:
+                    print("Você não pode jogar essa carta!")
             else:
-                print("Opção inválida!")
-                print()
+                print("Esse número não está entre as opções")
         else:
-            print("Opção inválida!")
-            print()
+            print("Opção inválida! Digite um número ou 'C' para comprar uma carta.")
+
+
+def jogada_valida(carta, topo):
+    if carta.numero == topo.numero or carta.cor == topo.cor:
+        return True
+    else:
+        return False
 
 def jogo():
     baralho = Baralho()
@@ -60,8 +70,8 @@ def jogo():
     exibir_cartas(cartas_jogador)
     digite_enter()
 
-    carta_topo = baralho.primeiraCarta()
-    print(f"A carta inicial é um {carta_topo.nome}")
+    topo = baralho.primeiraCarta()
+    print(f"A carta inicial é um {topo.nome}")
     digite_enter()
 
     jogador_atual = "Jogador"
@@ -70,11 +80,12 @@ def jogo():
     while len(cartas_jogador) > 0 and len(cartas_computador) > 0:
         if jogador_atual == "Jogador":
             exibir_cartas(cartas_jogador)
-            jogada_jogador(cartas_jogador)
+            jogada_jogador(cartas_jogador, topo)
             jogador_atual = "Computador"
         
         if jogador_atual == "Computador":
-            jogada_computador(cartas_computador)
+            jogada_computador(cartas_computador, topo)
+            jogador_atual = "Jogador"
 
 
 def digite_enter():
