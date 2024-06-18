@@ -42,6 +42,14 @@ class Baralho:
     def embaralhar(self):
         random.shuffle(self.cartas)
 
+    def primeiraCarta(self):
+        while True:
+            carta = self.cartas.pop(0)
+            if carta.numero:
+                return carta
+            else:
+                self.cartas.append(carta)
+
     def distribuirCartas(self):
         self.embaralhar()
         cartas_distribuidas = []

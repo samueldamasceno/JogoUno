@@ -36,6 +36,9 @@ def jogada_jogador(cartas_jogador):
     carta_jogada = input()
     verificar_opcao(carta_jogada, cartas_jogador)
 
+def jogada_computador(cartas_computador):
+
+
 def verificar_opcao(carta_jogada, cartas_jogador):
     while True:
         if carta_jogada.isnumeric():
@@ -54,9 +57,24 @@ def jogo():
     baralho = Baralho()
     cartas_jogador = baralho.distribuirCartas()
     cartas_computador = baralho.distribuirCartas()
-    while cartas_jogador != 0 or cartas_computador != 0:
-        exibir_cartas(cartas_jogador)
-        jogada_jogador(cartas_jogador)
+    exibir_cartas(cartas_jogador)
+    digite_enter()
+
+    carta_topo = baralho.primeiraCarta()
+    print(f"A carta inicial é um {carta_topo.nome}")
+    digite_enter()
+
+    jogador_atual = "Jogador"
+    print("Vamos lá! Você começa")
+
+    while len(cartas_jogador) > 0 and len(cartas_computador) > 0:
+        if jogador_atual == "Jogador":
+            exibir_cartas(cartas_jogador)
+            jogada_jogador(cartas_jogador)
+            jogador_atual = "Computador"
+        
+        if jogador_atual == "Computador":
+            jogada_computador(cartas_computador)
 
 
 def digite_enter():
@@ -67,9 +85,9 @@ while True:
     bem_vindo()
     jogo()
     print()
-    print("Deseja jogar novamente?")
-    print("""1. Sim
-         2. Não""")
+    print("""Deseja jogar novamente?
+          1. Sim
+          2. Não""")
     opcao = input()
     while True:
         if opcao == "1":
