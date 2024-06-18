@@ -1,4 +1,4 @@
-from cartas import Baralho
+from cartas import Baralho, CartaComum, CartaEspecial, CartaCoringa
 
 def bem_vindo():
     print("Vamos jogar Uno?")
@@ -60,15 +60,20 @@ def jogada_computador(cartas_computador, topo, baralho):
     for carta in cartas_computador:
         if jogada_valida(carta, topo):
             cartas_computador.remove(carta)
+            print(f"O computador jogou a carta {carta.nome}. Ficando com {len(cartas_computador)} cartas.")
             return carta
     cartas_computador.extend(baralho.comprarCarta(1))
+    print(f"O computador comprou uma carta. Agora ele está com {len(cartas_computador)} cartas.")
     return topo
 
 def jogada_valida(carta, topo):
-    if carta.numero == topo.numero or carta.cor == topo.cor:
+    if isinstance(carta, CartaCoringa):
         return True
-    else:
-        return False
+    elif isinstance(carta, CartaComum):
+        return carta.numero == topo.numero or carta.cor == topo.cor
+    elif isinstance(carta, CartaEspecial):
+        return carta.nome == topo.nome or carta.cor == topo.cor
+    return False
 
 def jogo():
     baralho = Baralho()
@@ -93,6 +98,11 @@ def jogo():
             topo = jogada_computador(cartas_computador, topo, baralho)
             jogador_atual = "Jogador"
         digite_enter()
+
+    if len(cartas_jogador) == 0:
+        print("Você ganhou!")
+    else:
+        print("Você perdeu!")
 
 
 def digite_enter():
