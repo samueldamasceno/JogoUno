@@ -1,4 +1,5 @@
 from cartas import Baralho, CartaComum, CartaEspecial, CartaCoringa
+import random
 
 def bem_vindo():
     print("Vamos jogar Uno?")
@@ -121,12 +122,10 @@ def aplicar_efeito(carta, jogador_atual, cartas_jogador, cartas_computador, bara
                 print(f"Você agora está com {len(cartas_jogador)} cartas.")
             cor = escolher_cor(jogador_atual, cartas_computador)
             carta.cor = cor
-            print(f"A nova cor é {cor}.")
             return True 
         elif carta.nome == "Coringa":
             cor = escolher_cor()
             carta.cor = cor
-            print(f"A nova cor é {cor}.")
             return False
 
 def escolher_cor(jogador, cartas_computador):
@@ -136,23 +135,30 @@ def escolher_cor(jogador, cartas_computador):
             2. Azul
             3. Verde
             4. Amarelo""")
-        opcao = input()
         while True:
-            if opcao == "1":
-                return "Vermelho"
-            elif opcao == "2":
-                return "Azul"
-            elif opcao == "3":
-                return "Verde"
-            elif opcao == "4":
-                return "Amarelo"
-            else:
+            opcao = input()
+            if opcao not in ["1", "2", "3", "4"]:
                 print("Opção inválida!")
                 print()
+            else:
+                break
+        if opcao == "1":
+            cor = "Vermelho"
+        elif opcao == "2":
+            cor = "Azul"
+        elif opcao == "3":
+            cor = "Verde"
+        elif opcao == "4":
+            cor = "Amarelo"
+        print(f"Você escolheu a cor {cor}")
+        return cor
     else:
         for carta in cartas_computador:
             if isinstance(carta, (CartaComum, CartaEspecial)):
                 return carta.cor
+        cor = random.choice["Vermelho", "Azul", "Verde", "Vermelho"]
+        print(f"O computador escolheu a cor {cor}")
+        return cor
 
 def jogo():
     baralho = Baralho()
