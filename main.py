@@ -56,6 +56,13 @@ def jogada_jogador(cartas_jogador, topo, baralho):
         else:
             print("Opção inválida! Digite um número ou 'C' para comprar uma carta.")
 
+def jogada_computador(cartas_computador, topo, baralho):
+    for carta in cartas_computador:
+        if jogada_valida(carta, topo):
+            cartas_computador.remove(carta)
+            return carta
+    cartas_computador.extend(baralho.comprarCarta(1))
+    return topo
 
 def jogada_valida(carta, topo):
     if carta.numero == topo.numero or carta.cor == topo.cor:
@@ -80,12 +87,12 @@ def jogo():
     while len(cartas_jogador) > 0 and len(cartas_computador) > 0:
         if jogador_atual == "Jogador":
             exibir_cartas(cartas_jogador)
-            jogada_jogador(cartas_jogador, topo)
+            topo = jogada_jogador(cartas_jogador, topo, baralho)
             jogador_atual = "Computador"
-        
-        if jogador_atual == "Computador":
-            jogada_computador(cartas_computador, topo)
+        else:
+            topo = jogada_computador(cartas_computador, topo, baralho)
             jogador_atual = "Jogador"
+        digite_enter()
 
 
 def digite_enter():
