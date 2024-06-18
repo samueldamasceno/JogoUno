@@ -23,8 +23,45 @@ def bem_vindo():
 def regras():
     print("a")
 
+def exibir_cartas(cartas):
+    print("Essas são suas cartas:")
+    i = 1
+    for carta in cartas:
+        print(f"{i}. {carta.nome}")
+        i += 1
+    print()
+
+def jogada_jogador(cartas_jogador):
+    print("Qual carta você vai jogar? (Digite o número da lista em que ele está)")
+    carta_jogada = input()
+    verificar_opcao(carta_jogada, cartas_jogador)
+
+def verificar_opcao(carta_jogada, cartas_jogador):
+    while True:
+        if carta_jogada.isnumeric():
+            carta_jogada = int(carta_jogada)
+            if carta_jogada > 0 and carta_jogada <= len(cartas_jogador):
+                carta_jogada = cartas_jogador[carta_jogada - 1]
+                break
+            else:
+                print("Opção inválida!")
+                print()
+        else:
+            print("Opção inválida!")
+            print()
+
 def jogo():
     baralho = Baralho()
+    cartas_jogador = baralho.distribuirCartas()
+    cartas_computador = baralho.distribuirCartas()
+    while cartas_jogador != 0 or cartas_computador != 0:
+        exibir_cartas(cartas_jogador)
+        jogada_jogador(cartas_jogador)
+
+
+def digite_enter():
+    input("Digite ENTER para continuar.")
+    print()
 
 while True:
     bem_vindo()

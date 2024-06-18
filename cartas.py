@@ -4,24 +4,18 @@ class CartaComum:
     def __init__(self, numero, cor):
         self.numero = numero
         self.cor = cor
-
-    def __str__(self):
-        return f"{self.numero} {self.cor}"
+        self.nome = f"{numero} {cor}"
 
 class CartaEspecial:
     def __init__(self, nome, cor):
         self.nome = nome
         self.cor = cor
-
-    def __str__(self):
-        return f"{self.nome} {self.cor}"
+        self.nome = f"{nome} {cor}"
 
 class CartaCoringa:
     def __init__(self, nome):
         self.nome = nome
     
-    def __str__(self):
-        return f"{self.nome}"
 
 class Baralho:
     def __init__(self):
