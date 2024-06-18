@@ -129,6 +129,7 @@ def aplicar_efeito(carta, jogador_atual, cartas_jogador, cartas_computador, bara
             return False
 
 def escolher_cor(jogador, cartas_computador):
+    cores = ["Vermelho", "Azul", "Verde", "Amarelo"]
     if jogador == "Jogador":
         print("""Escolha uma cor:
             1. Vermelho
@@ -137,26 +138,19 @@ def escolher_cor(jogador, cartas_computador):
             4. Amarelo""")
         while True:
             opcao = input()
-            if opcao not in ["1", "2", "3", "4"]:
-                print("Opção inválida!")
-                print()
+            if opcao in ["1", "2", "3", "4"]:
+                cor = cores[int(opcao) - 1]
+                print(f"Você escolheu a cor {cor}")
+                return cor
             else:
-                break
-        if opcao == "1":
-            cor = "Vermelho"
-        elif opcao == "2":
-            cor = "Azul"
-        elif opcao == "3":
-            cor = "Verde"
-        elif opcao == "4":
-            cor = "Amarelo"
-        print(f"Você escolheu a cor {cor}")
-        return cor
+                print("Opção inválida!")
     else:
         for carta in cartas_computador:
             if isinstance(carta, (CartaComum, CartaEspecial)):
-                return carta.cor
-        cor = random.choice["Vermelho", "Azul", "Verde", "Vermelho"]
+                cor = carta.cor
+                print(f"O computador escolheu a cor {cor}")
+                return cor
+        cor = random.choice(cores)
         print(f"O computador escolheu a cor {cor}")
         return cor
 
