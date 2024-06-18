@@ -80,6 +80,80 @@ def jogada_valida(carta, topo):
         return carta.cor == topo.cor
     return False
 
+def aplicar_efeito(carta, jogador_atual, cartas_jogador, cartas_computador, baralho):
+    if isinstance(carta, CartaComum):
+        return False
+    elif isinstance(carta, CartaEspecial):
+        if carta.tipo == "+2":
+            if jogador_atual == "Jogador":
+                print("O computador comprou 2 cartas")
+                cartas_computador.extend(baralho.comprarCarta(2))
+                print(f"O computador está com {len(cartas_computador)} cartas.")
+            else:
+                print("Você comprou duas cartas:")
+                cartas_compradas = baralho.comprarCarta(2)
+                cartas_jogador.extend(cartas_compradas)
+                for carta in cartas_compradas:
+                    print(f"- {carta.nome}")
+                print(f"Agora você está com {len(cartas_jogador)} cartas.")
+            return True
+        elif carta.tipo == "Bloqueio":
+            if jogador_atual == "Jogador":
+                print("O computador foi bloqueado.")
+            else:
+                print("Você está bloqueado.")
+            return True
+        elif carta.tipo == "Inverter":
+            print("A direção da partida mudou, mas como só tem dois jogadores isso não faz diferença.")
+            return False
+    elif isinstance(carta, CartaCoringa):
+        if carta.nome == "+4":
+            if jogador_atual == "Jogador":
+                print("O computador comprou 4 cartas")
+                cartas_computador.extend(baralho.comprarCarta(4))
+                print(f"O computador agora está com {len(cartas_computador)} cartas.")
+            else:
+                print("Você comprou quatro cartas:")
+                cartas_compradas = baralho.comprarCarta(4)
+                cartas_jogador.extend(cartas_compradas)
+                for carta in cartas_compradas:
+                    print(f"- {carta.nome}")
+                print(f"Você agora está com {len(cartas_jogador)} cartas.")
+            cor = escolher_cor(jogador_atual, cartas_computador)
+            carta.cor = cor
+            print(f"A nova cor é {cor}.")
+            return True 
+        elif carta.nome == "Coringa":
+            cor = escolher_cor()
+            carta.cor = cor
+            print(f"A nova cor é {cor}.")
+            return False
+
+def escolher_cor(jogador, cartas_computador):
+    if jogador == "Jogador":
+        print("""Escolha uma cor:
+            1. Vermelho
+            2. Azul
+            3. Verde
+            4. Amarelo""")
+        opcao = input()
+        while True:
+            if opcao == "1":
+                return "Vermelho"
+            elif opcao == "2":
+                return "Azul"
+            elif opcao == "3":
+                return "Verde"
+            elif opcao == "4":
+                return "Amarelo"
+            else:
+                print("Opção inválida!")
+                print()
+    else:
+        for carta in cartas_computador:
+            if isinstance(carta, (CartaComum, CartaEspecial)):
+                return carta.cor
+
 def jogo():
     baralho = Baralho()
     cartas_jogador = baralho.distribuirCartas()
@@ -98,17 +172,24 @@ def jogo():
         if jogador_atual == "Jogador":
             exibir_cartas(cartas_jogador)
             topo = jogada_jogador(cartas_jogador, topo, baralho)
-            jogador_atual = "Computador"
+            bloqueado = aplicar_efeito(topo, jogador_atual, cartas_jogador, cartas_computador, baralho)
+            if bloqueado:
+                jogador_atual = "Jogador"
+            else:
+                jogador_atual = "Computador"
         else:
             topo = jogada_computador(cartas_computador, topo, baralho)
-            jogador_atual = "Jogador"
+            bloqueado = aplicar_efeito(topo, jogador_atual, cartas_jogador, cartas_computador, baralho)
+            if bloqueado:
+                jogador_atual = "Computador"
+            else:
+                jogador_atual = "Jogador"
         digite_enter()
 
     if len(cartas_jogador) == 0:
         print("Você ganhou!")
     else:
         print("Você perdeu!")
-
 
 def digite_enter():
     input("Digite ENTER para continuar.")
