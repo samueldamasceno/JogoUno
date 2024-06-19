@@ -58,6 +58,7 @@ def exibir_cartas(cartas):
 
 def jogada_jogador(cartas_jogador, topo, baralho):
     while True:
+        comprou = False
         print("Qual carta você vai jogar? (Digite o número da lista ou a letra C para comprar uma carta)")
         carta_jogada = input()
         
@@ -65,14 +66,15 @@ def jogada_jogador(cartas_jogador, topo, baralho):
             carta_nova = baralho.comprarCarta(1)
             cartas_jogador.extend(carta_nova)
             print("Você comprou: " + carta_nova[0].nome)
-            return topo
+            comprou = True
+            return topo, comprou
         elif carta_jogada.isnumeric():
             carta_jogada = int(carta_jogada)
             if carta_jogada > 0 and carta_jogada <= len(cartas_jogador):
                 carta_selecionada = cartas_jogador[carta_jogada - 1]
                 if jogada_valida(carta_selecionada, topo):
                     cartas_jogador.remove(carta_selecionada)
-                    return carta_selecionada
+                    return carta_selecionada, comprou
                 else:
                     print("Você não pode jogar essa carta!")
             else:
@@ -199,12 +201,15 @@ def jogo():
             print(f"A última carta jogada foi um {topo.nome}")
             print()
             exibir_cartas(cartas_jogador)
-            topo = jogada_jogador(cartas_jogador, topo, baralho)
-            bloqueado = aplicar_efeito(topo, jogador_atual, cartas_jogador, cartas_computador, baralho)
-            if bloqueado:
-                jogador_atual = "Jogador"
-            else:
+            topo, comprou = jogada_jogador(cartas_jogador, topo, baralho)
+            if comprou:
                 jogador_atual = "Computador"
+            else:
+                bloqueado = aplicar_efeito(topo, jogador_atual, cartas_jogador, cartas_computador, baralho)
+                if bloqueado:
+                    jogador_atual = "Jogador"
+                else:
+                    jogador_atual = "Computador"
         else:
             topo = jogada_computador(cartas_computador, topo, baralho)
             bloqueado = aplicar_efeito(topo, jogador_atual, cartas_jogador, cartas_computador, baralho)

@@ -58,6 +58,8 @@ class Baralho:
         return cartas_distribuidas
 
     def comprarCarta(self, quantidade):
+        if quantidade > len(self.cartas):
+            return []
         cartas_compradas = []
         for i in range(quantidade):
             cartas_compradas.append(self.cartas.pop(0))
